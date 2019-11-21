@@ -7,66 +7,58 @@ import javax.persistence.Id;
 
 /**
  * @author YanYuHang
- * @create 2019-11-20-10:03
+ * @create 2019-11-21-8:57
  */
 @Entity
 public class Student {
-    private int id;
-    private String name;
+    private int stuId;
+    private String stuName;
 
     @Id
-    @Column(name = "stu_id")
-    public int getId() {
-        return id;
+    @Column(name = "stu_id", nullable = false)
+    public int getStuId() {
+        return stuId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStuId(int stuId) {
+        this.stuId = stuId;
     }
 
     @Basic
-    @Column(name = "stu_name")
-    public String getName() {
-        return name;
+    @Column(name = "stu_name", nullable = false, length = 20)
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Student student = (Student) o;
 
-        if (id != student.id) {
-            return false;
-        }
-        if (name != null ? !name.equals(student.name) : student.name != null) {
-            return false;
-        }
-        return true;
+        if (stuId != student.stuId) return false;
+        if (stuName != null ? !stuName.equals(student.stuName) : student.stuName != null) return false;
 
+        return true;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "stuId=" + stuId +
+                ", stuName='" + stuName + '\'' +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = stuId;
+        result = 31 * result + (stuName != null ? stuName.hashCode() : 0);
         return result;
     }
 }

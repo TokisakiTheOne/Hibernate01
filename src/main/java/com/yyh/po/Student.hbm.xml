@@ -2,9 +2,14 @@
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="com.yyh.po">
+<hibernate-mapping>
+
     <class name="com.yyh.po.Student" table="student" schema="mybatis">
-        <id name="id" column="stu_id"/>
-        <property name="name" column="stu_name"/>
+        <id name="stuId">
+            <column name="stu_id" sql-type="int(11)"/>
+        </id>
+        <property name="stuName">
+            <column name="stu_name" sql-type="varchar(20)" length="20"/>
+        </property>
     </class>
 </hibernate-mapping>

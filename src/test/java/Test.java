@@ -1,56 +1,98 @@
 import com.yyh.po.Student;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-
-import java.util.List;
+import org.junit.After;
+import org.junit.Before;
 
 /**
  * @author YanYuHang
  * @create 2019-11-20-10:08
  */
 public class Test {
+    //会话工厂
+    private SessionFactory sessionFactory;
+    //会话
+    private Session session;
+    //事务
+    private Transaction tx;
+
+    @org.junit.Before
+    public void before() {
+        //加载配置文件  configure() 方法  参数   hibernate配置文件的路径
+        //如果不写  默认 classpath:hibernate.cfg.xml
+        //如果写   就会找自定义路径
+        Configuration configure = new Configuration().configure();
+        //创建会话工厂
+        sessionFactory = configure.buildSessionFactory();
+        //生产会话
+        session = sessionFactory.openSession();
+        //开启事务
+        tx = session.beginTransaction();
+    }
+
+    /**
+     * 测试  单条查询
+     */
     @org.junit.Test
-    public void test() {
-        //1.获取SessionFactory  会话工厂
-        SessionFactory sessionFactory =
-                new Configuration().configure().buildSessionFactory();
-        //2.生产会话  通过opensession  获取session对象
-        Session session = sessionFactory.openSession();
-        //3.开启一个事务
-        Transaction transaction = session.beginTransaction();
-        //4.1执行查询(查询单条数据)  get(要查询的实体类型,参数)
+    public void testGet() {
         Student student = session.get(Student.class, 1);
         System.out.println("student = " + student);
-        //4.2 执行查询(查询单条数据)
-        Student student1 = session.get(Student.class, 1);
-        System.out.println("student1 = " + student1);
-        //4.3 执行查询(查询单条数据)    hql 语句
-        String hql1="from Student where id=?";
-        String hql2="from Student where id=:id";
-        Query query = session.createQuery(hql2);
-        //query.setParameter(0,1);//hql1传值   占位符从0开始
-        query.setParameter("id",5);//hql2传值 自定义占位符名
+    }
+    @org.junit.Test
+    public void testLoad() {
+        Student student = session.load(Student.class, 1);
+        System.out.println("student = " + student);
+    }
 
-        Object o = query.uniqueResult();//只针对于 已经知道只有一条语句时才能使用
-        System.out.println("o = " + o);
-
-        
-        //5查询全部
-        Query query1 = session.createQuery("from com.yyh.po.Student");
-        List<Student> list = query1.list();
-        for (Student stu : list) {
-            System.out.println("stu = " + stu);
+    /**
+     * 增加操作
+     */
+    @org.junit.Test
+    public void testInsert() {
+        Student stu =new Student();
+        stu.setStuName("王五");
+        session.save(stu);
+    }
+    /**
+     * 删除操作
+     */
+    @org.junit.Test
+    public void testDelete() {
+        //删除  先根据id查询是否存在对象(entity)  再去删除
+        Student stu=session.get(Student.class,5);
+        if(stu!=null){
+            session.delete(stu);
         }
+    }
+    /**
+     * 修改操作
+     */
+    @org.junit.Test
+    public void testUpdate() {
+        Student student=new Student();
+        student.setStuId(6);
+        student.setStuName("哈哈");
+        session.update(student);
+    }
 
-       /* transaction.commit();//提交事务
-        session.close();//关闭session
-        session=sessionFactory.openSession();
-        transaction=session.beginTransaction();*/
-
-
-
+    /**
+     * 新增 或是  修改
+     *   根据 实体类中的 主键  进行查询
+     *   如果 查询到数据  那么执行 修改操作
+     *   否则               执行 添加操作
+     */
+    @org.junit.Test
+    public void testSaveOrUpdate() {
+        Student student=new Student();
+        student.setStuName("哈哈123");
+        session.saveOrUpdate(student);
+    }
+    @org.junit.After
+    public void after() {
+        tx.commit();
+        session.close();
+        sessionFactory.close();
     }
 }
