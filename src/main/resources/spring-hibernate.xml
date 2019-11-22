@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--1.扫描包-->
+    <context:component-scan base-package="com"/>
+    <!--2.创建数据源-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql:///mybatis"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="12315.qq"></property>
+    </bean>
+    <!--3.创建会话工厂-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--3.1加载数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--3.2.1加载hibernate的配置文件-->
+        <!--<property name="configLocations" value="classpath:hibernate.cfg.xml"/>-->
+        <!--3.2.2-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <!--3.2.3自动扫描hibernate的映射-->
+        <property name="mappingDirectoryLocations">
+            <list>
+                <value>classpath:com/yyh/po</value>
+            </list>
+        </property>
+        <property name="packagesToScan">
+            <value>com.yyh.po</value>
+        </property>
+    </bean>
+    <bean class="org.springframework.orm.hibernate5.HibernateTemplate">
+
+    </bean>
+    <!--4.配置事务管理器-->
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <!--4.1加载会话工厂-->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+</beans>

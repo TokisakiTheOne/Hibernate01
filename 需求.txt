@@ -1,0 +1,34 @@
+
+数据库名:3166shoppingwebsite    购物网站
+项目名:ShoppingWebSite
+
+项目技术要求
+  Spring
+  SpringMVC
+  MyBatis
+  Thymeleaf
+  BootStrap
+1. 商品表  product
+    product_id              编号          ps:(varchar(20)) pro1000
+    product_name            名称
+    product_sum             库存
+    product_price           价格
+    status_id        int    状态
+
+2.状态表  status
+    status_id
+    status_name                 上架   下架  待审核
+
+
+
+1. 查询
+    1.1    连表查询    商品的全部信息 和  当前的状态信息
+    1.2    根据商品名称模糊查询
+    1.3    根据商品状态查询
+2.修改
+    修改 只能修改  库存  价格 和 状态
+3.增加商品
+    增加 商品   修改商品 的 页面
+    修改   下拉列表 使用状态表填充
+    增加   单选按钮   默认  待审核
+
