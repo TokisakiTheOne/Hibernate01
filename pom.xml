@@ -7,6 +7,18 @@
     <groupId>com.yyh</groupId>
     <artifactId>Hibernate01</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!--hibernate-->
@@ -59,12 +71,17 @@
             <artifactId>spring-webmvc</artifactId>
             <version>4.3.9.RELEASE</version>
         </dependency>
-        <!--spring 和hibernate 的关系包-->
-       <!-- <dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-hibernate</artifactId>
-            <version>1.2.9</version>
-        </dependency>-->
+            <artifactId>spring-test</artifactId>
+            <version>4.3.9.RELEASE</version>
+        </dependency>
+        <!--spring 和hibernate 的关系包-->
+        <!-- <dependency>
+             <groupId>org.springframework</groupId>
+             <artifactId>spring-hibernate</artifactId>
+             <version>1.2.9</version>
+         </dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>

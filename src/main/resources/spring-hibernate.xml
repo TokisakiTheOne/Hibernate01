@@ -3,9 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
     <!--1.扫描包-->
-    <context:component-scan base-package="com"/>
+    <!--<context:component-scan base-package="com.yyh"/>-->
     <!--2.创建数据源-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -39,9 +38,11 @@
             <value>com.yyh.po</value>
         </property>
     </bean>
-    <bean class="org.springframework.orm.hibernate5.HibernateTemplate">
 
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
     <!--4.配置事务管理器-->
     <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <!--4.1加载会话工厂-->
