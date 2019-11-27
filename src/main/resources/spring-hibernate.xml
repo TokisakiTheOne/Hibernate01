@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!--1.扫描包-->
-    <!--<context:component-scan base-package="com.yyh"/>-->
+    <context:component-scan base-package="com.yyh"/>
     <!--2.创建数据源-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -24,8 +24,13 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.current_session_context_class">thread</prop>
+                <!--如果使用hibernate模板  那么 要把线程管理事务去掉，让hibernate事务默认管理-->
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--自动提交事务-->
+<!--
+                <prop key="hibernate.connection.autocommit">true</prop>
+-->
             </props>
         </property>
         <!--3.2.3自动扫描hibernate的映射-->
@@ -38,14 +43,16 @@
             <value>com.yyh.po</value>
         </property>
     </bean>
-
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
     <!--4.配置事务管理器-->
     <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <!--4.1加载会话工厂-->
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <!--5.配置hibernate的模板-->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <!--5.1加载会话工厂-->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--6.开启spring事务-->
+    <tx:annotation-driven transaction-manager="txManager"/>
 </beans>

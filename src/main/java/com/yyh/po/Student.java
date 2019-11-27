@@ -1,5 +1,7 @@
 package com.yyh.po;
 
+import lombok.Data;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.Id;
  * @create 2019-11-21-8:57
  */
 @Entity
+@Data
 public class Student {
     private int stuId;
     private String stuName;

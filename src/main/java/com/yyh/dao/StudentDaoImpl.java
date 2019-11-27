@@ -13,7 +13,7 @@ import java.util.List;
  * @create 2019-11-21-11:00
  */
 public class StudentDaoImpl implements StudentDao {
-
+    @Override
     public List<Student> selectAll() {
         //1.获取session
         Session session = HibernateUtils.getSession();
@@ -27,6 +27,7 @@ public class StudentDaoImpl implements StudentDao {
         return list;
     }
 
+    @Override
     public boolean delete(int id) {
         //1.获取session
         Session session = HibernateUtils.getSession();
@@ -46,11 +47,12 @@ public class StudentDaoImpl implements StudentDao {
             tx.rollback();
             ex.printStackTrace();
             return false;
-        }finally {
+        } finally {
             session.close();
         }
     }
 
+    @Override
     public Student selectOne(int id) {
         //1.获取session
         //Session session = HibernateUtils.getSession();
@@ -58,6 +60,7 @@ public class StudentDaoImpl implements StudentDao {
         return HibernateUtils.getSession().get(Student.class, id);
     }
 
+    @Override
     public boolean insertOrUpdate(Student student) {
         //1.获取session
         Session session = HibernateUtils.getSession();
@@ -68,11 +71,11 @@ public class StudentDaoImpl implements StudentDao {
             session.saveOrUpdate(student);
             tx.commit();
             return true;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             tx.rollback();
             ex.printStackTrace();
             return false;
-        }finally {
+        } finally {
             session.close();
         }
 

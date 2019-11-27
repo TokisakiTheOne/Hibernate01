@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.lang.model.SourceVersion;
@@ -18,34 +19,45 @@ import java.util.List;
  * @create 2019-11-22-12:10
  */
 @Repository
+@Transactional(rollbackFor = Exception.class)
 public class StudentDaoSpringImpl implements StudentDao {
 
     @Autowired
     SessionFactory sessionFactory;
+    @Autowired
+    HibernateTemplate hibernateTemplate;
 
     @Override
     public List<Student> selectAll() {
-        System.out.println("sessionFactory = " + sessionFactory);
-        //1.获取session
-        Session session = sessionFactory.openSession();
-        //2.创建query对象
-        Query query = session.createQuery("from Student");
-        //3.执行查询
-        return query.list();
+        return hibernateTemplate.loadAll(Student.class);
     }
 
     @Override
     public boolean delete(int id) {
-        return false;
+        try {
+            hibernateTemplate.bulkUpdate("delete from Student where id=?",id);
+            hibernateTemplate.flush();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     @Override
     public Student selectOne(int id) {
-        return null;
+        return hibernateTemplate.get(Student.class, id);
     }
 
     @Override
     public boolean insertOrUpdate(Student student) {
-        return false;
+        try {
+            hibernateTemplate.saveOrUpdate(student);
+/*
+            hibernateTemplate.flush();
+*/
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

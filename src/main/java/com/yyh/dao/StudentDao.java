@@ -8,7 +8,7 @@ import java.util.List;
  * @author YanYuHang
  * @create 2019-11-21-11:00
  */
-public interface StudentDao   {
+public interface StudentDao {
 
     /**
      * 查询全部
@@ -37,13 +37,11 @@ public interface StudentDao   {
 
     /**
      * 增加 修改
+     *
      * @param student
      * @return
      */
     boolean insertOrUpdate(Student student);
-
-
-
 
 
 }

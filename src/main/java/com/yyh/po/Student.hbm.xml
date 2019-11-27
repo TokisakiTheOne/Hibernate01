@@ -7,6 +7,7 @@
     <class name="com.yyh.po.Student" table="student" schema="mybatis">
         <id name="stuId">
             <column name="stu_id" sql-type="int(11)"/>
+            <generator class="native"></generator>
         </id>
         <property name="stuName">
             <column name="stu_name" sql-type="varchar(20)" length="20"/>
